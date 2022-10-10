@@ -14,7 +14,7 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ReviewForm, self).__init__(*args, **kwargs)
-        # create form structure using crispy forms
+      
         self.helper = FormHelper()
         self.helper.form_id = 'product-review-form'
         self.helper.form_method = 'post'

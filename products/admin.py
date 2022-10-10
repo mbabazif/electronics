@@ -14,9 +14,9 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ('is_live',)
     list_filter = ('is_live', 'brand', )
 
-    inlines = [
-        ReviewInline,
-    ]
+    # inlines = [
+    #     ReviewInline,
+    # ]
 
 
 admin.site.register(Product, ProductAdmin)

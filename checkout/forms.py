@@ -92,7 +92,7 @@ class PaymentProcessingForm(forms.Form):
                 css_class='form-row'
             ),
             StrictButton(
-                f'Pay €{payment_amount}',
+                f'Pay frw{payment_amount}',
                 css_class='btn btn-info btn-sm',
                 css_id='payment-button',
                 data_secret=stripe_secret,

@@ -37,8 +37,7 @@ class Product(models.Model):
 
 class Review(models.Model):
     """Users can leave product reviews"""
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='reviews')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
     RATING_CHOICES = (
         (1, '1'),
         (2, '2'),

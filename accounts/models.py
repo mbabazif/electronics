@@ -40,15 +40,14 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=150, blank=True, null=True)
     email = models.EmailField(blank=False, unique=True)
     address = models.CharField(max_length=255, null=True)
-    city = models.CharField(max_length=50, null=True)
-    country = models.CharField(max_length=100, null=True)
-    post_code = models.CharField(max_length=30, null=True)
-    date_of_birth = models.DateField(null=True)
+    # city = models.CharField(max_length=50, null=True)
+    # country = models.CharField(max_length=100, null=True)
+    # post_code = models.CharField(max_length=30, null=True)
+    # date_of_birth = models.DateField(null=True)
 
     USERNAME_FIELD = 'email'
 
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'address', 'city',
-                       'country', 'post_code', 'date_of_birth']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'address']
 
     objects = CustomUserManager()
 

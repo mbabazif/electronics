@@ -4,11 +4,12 @@
 
 {% block title %} | Shopping Basket{% endblock title %}
 {% block content %}
-<h1>Shopping Basket</h1>
+<h1 style="margin-left: 40%">Shopping Basket</h1>
 {% if request.basket.count > 0 %}
-<p>There are {{ request.basket.count }} item(s) in your basket.</p>
+<p style="margin-left: 40%">There are {{ request.basket.count }} item(s) in your basket.</p>
 
 {% spaceless %}
+<div class="w3l_banner_nav_right">
 <div class="table-responsive">
     <form method="POST">
         {% csrf_token %}
@@ -43,8 +44,8 @@
                         <small class="text-danger">{{ form.quantity.errors|striptags }}</small>
                         {% endif %}
                     </td>
-                    <td class="item-price">€{{ form.instance.product.price|intcomma }}</td>
-                    <td class="item-total">€{{ form.instance.subtotal }}</td>
+                    <td class="item-price">frw{{ form.instance.product.price|intcomma }}</td>
+                    <td class="item-total">frw{{ form.instance.subtotal }}</td>
                     {% if formset.can_delete %}
                     <td>{{ form.DELETE }}</td>
                     {% endif %}
@@ -56,7 +57,7 @@
                     <td></td>
                     <td><button class="btn btn-sm btn-primary my-2 my-sm-0" type="submit">Update</button></td>
                     <td>Total</td>
-                    <td class="item-total">€{{ request.basket.total|intcomma}}</td>
+                    <td class="item-total">frw{{ request.basket.total|intcomma}}</td>
                     <td></td>
                 </tr>
             </tbody>
@@ -66,6 +67,7 @@
             <a href="{% url 'checkout' %}" class="ml-2 btn btn-success">Checkout</a>
         </div>
     </form>
+</div>
 </div>
 {% endspaceless %}
 
