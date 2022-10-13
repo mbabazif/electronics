@@ -1,25 +1,404 @@
-{% extends 'base.html' %}
 
-{% block title %} | Update Profile{% endblock title %}
-{% block content %}
-<h1>Profile</h1>
-<div class="row mb-2">
-    <section id="profile-links col-6">
-        <a href="{% url 'account_profile' %}"
-            class="btn btn-sm btn-outline-dark {% if 'profile' in request.path %} active {% endif %}">Update
-            Personal
-            Details</a>
-        <a href="{% url 'account_email' %}"
-            class="btn btn-sm btn-outline-dark {% if 'email' in request.path %} active {% endif %}">Change Email</a>
-        <a href="{% url 'account_set_password' %}"
-            class="btn btn-sm btn-outline-dark {% if 'password' in request.path %} active {% endif %}">Change
-            Password</a>
-    </section>
+{% load bootstrap3 %}
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800;900&display=swap"
+        rel="stylesheet">
+<script src="https://kit.fontawesome.com/6cef40e88b.js" crossorigin="anonymous"></script>
+<meta name="keywords" content="Grocery Store Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+
+<!-- //for-mobile-apps -->
+{% block styles %}
+{% bootstrap_css %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+<link rel="stylesheet" href="{% static 'css/payment.css' %}">
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" media="all" />
+<!-- font-awesome icons -->
+<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet" type="text/css" media="all" /> 
+<!-- //font-awesome icons -->
+<!-- js -->
+{% endblock %}
+
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<!-- //js -->
+<link href='//fonts.googleapis.com/css?family=Ubuntu:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="{% static 'js/move-top.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/easing.js' %}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){		
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smoth-scrolling -->
+    {% block header %}{% endblock %}
+</head>
+	
+<body>
+    <div class="agileits_header">
+        <div class="w3l_offers">
+            <a href="products.html">Electronics</a>
+        </div>
+        <div class="w3l_search">
+            <form class="form-inline" action="{% url 'product_search' %}" method="GET">
+                <input class="form-control mr-sm-2" name="keywords" type="text"
+                    {% if 'search' in request.path %} value="{{ search_keywords }}" {% else %}
+                    placeholder="Search" {% endif %} aria-label="Search">
+                <button class="search-btn" type="submit" aria-label="Search"><i
+                        class="fas fa-search"></i></button>
+            </form>
+        </div>
+        <div class="col-3 col-md-4">
+            <ul style="margin-left: 50%;">
+                <li class="basket-nav">
+                    
+                    <a href="{% url 'basket' %}"><i class="fas fa-shopping-basket"><span  class="badge badge-pill badge-warning cart-badge">{{ request.basket.count }}</span></i></a> 
+                   
+                </li>
+            </ul>
+        </div>
+       
+        <div class="w3l_header_right1">
+            <h2><a href="mail.html">Contact Us</a></h2>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+<!-- script-for sticky-nav -->
+	<script>
+	$(document).ready(function() {
+		 var navoffeset=$(".agileits_header").offset().top;
+		 $(window).scroll(function(){
+			var scrollpos=$(window).scrollTop(); 
+			if(scrollpos >=navoffeset){
+				$(".agileits_header").addClass("fixed");
+			}else{
+				$(".agileits_header").removeClass("fixed");
+			}
+		 });
+		 
+	});
+	</script>
+<!-- //script-for sticky-nav -->
+<div class="logo_products">
+    <div class="container">
+        <div class="w3ls_logo_products_left">
+            <img src="{% static 'images/electronics.png' %}" alt="Zahabu" width="80" height="80">
+        </div>
+        <div class="w3ls_logo_products_left1">
+            <ul class="special_items">
+                <li class="nav-item {% if request.path == '' %}active{% endif %}">
+                    <a class="nav-link" href="{% url 'home' %}">Home
+                        {% if request.path == '' %}<span class="sr-only">(current)</span>{% endif %}
+                    </a>
+                    <i>/</i></li>
+                <li class="nav-item {% if 'products' in request.path %}active{% endif %}">
+                    <a href="{% url 'product_list' %}" class="nav-link">Products
+                        {% if 'products' in request.path %}<span class="sr-only">(current)</span>{% endif %}
+                    </a>
+                    <i>/</i> </li>
+                <li class="nav-item {% if 'about' in request.path %}active{% endif %}">
+                    <a href="{% url 'about' %}" class="nav-link">About
+                        {% if 'about' in request.path %}<span class="sr-only">(current)</span>{% endif %}
+                    </a>
+                    <i>/</i></li>
+                    {% if user.is_authenticated %}
+                    <li
+                        class="nav-item {% if 'accounts' in request.path and 'logout' not in request.path %}active{% endif %}">
+                        <a href="{% url 'account_profile' %}" class="nav-link">Profile
+                            {% if 'accounts' in request.path and 'logout' not in request.path %}<span
+                                class="sr-only">(current)</span>{% endif %}
+                        </a>
+                        <i>/</i></li>
+                    <li
+                        class="nav-item {% if 'history' in request.path and 'logout' not in request.path %}active{% endif %}">
+                        <a href="{% url 'order_history' %}" class="nav-link">Order History
+                            {% if 'history' in request.path and 'logout' not in request.path %}<span
+                                class="sr-only">(current)</span>{% endif %}
+                        </a>
+                        <i>/</i></li>
+                    <li class="nav-item {% if 'logout' in request.path %}active{% endif %}">
+                        <a href="{% url 'account_logout' %}" class="nav-link">Logout
+                            {% if 'logout' in request.path %}<span class="sr-only">(current)</span>{% endif %}
+                        </a>
+                        <i>/</i></li>
+                    {% else %}
+                    <li class="nav-item {% if 'signup' in request.path %}active{% endif %}">
+                        <a href="{% url 'account_signup' %}" class="nav-link">Register
+                            {% if 'signup' in request.path %}<span class="sr-only">(current)</span>{% endif %}
+                        </a>
+                        <i>/</i></li>
+                    <li class="nav-item {% if 'login' in request.path %}active{% endif %}">
+                        <a href="{% url 'account_login' %}" class="nav-link">Login
+                            {% if 'login' in request.path %}<span class="sr-only">(current)</span>{% endif %}
+                        </a>
+                        <i>/</i></li>
+                        
+                    {% endif %}
+                    <li>
+                        {% if request.user.is_authenticated %}
+                        <i class="fa fa-user pr-1"></i> {{ user.first_name|title }}
+    
+                        {% else %}
+                        <a class="header-login" href="{% url 'account_login' %}"><i class="fa fa-user"></i> Login</a>
+                        {% endif %}
+                    </li>
+                
+            </ul>
+        </div>
+        
+       
+        <div class="clearfix"> </div>
+    </div>
 </div>
-{% block profile_content %}
-{% endblock profile_content %}
+<!-- //header -->
+<!-- products-breadcrumb -->
+<div class="products-breadcrumb">
+    <div class="container">
+        <ul>
+            <li><i class="fa fa-home" aria-hidden="true"></i><a href="#">Home</a><span>|</span></li>
+            <li>Events</li>
+        </ul>
+    </div>
+</div>
+<!-- //products-breadcrumb -->
+<!-- //products-breadcrumb -->
+<!-- banner -->
+<div class="banner">
+    <div class="w3l_banner_nav_left">
+        <nav class="navbar nav_bottom">
+         <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header nav_2">
+              <button type="button" class="navbar-toggle collapsed navbar-toggle1" data-toggle="collapse" data-target="#bs-megadropdown-tabs">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+           </div> 
+           <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+                <ul class="nav navbar-nav nav_1">
+                    <li><a href="products.html">Branded Foods</a></li>
+                    <li><a href="household.html">Households</a></li>
+                    <li class="dropdown mega-dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Veggies & Fruits<span class="caret"></span></a>				
+                        <div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+                            <div class="w3ls_vegetables">
+                                <ul>	
+                                    <li><a href="vegetables.html">Vegetables</a></li>
+                                    <li><a href="vegetables.html">Fruits</a></li>
+                                </ul>
+                            </div>                  
+                        </div>				
+                    </li>
+                    <li><a href="kitchen.html">Kitchen</a></li>
+                    <li><a href="short-codes.html">Short Codes</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Beverages<span class="caret"></span></a>
+                        <div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+                            <div class="w3ls_vegetables">
+                                <ul>
+                                    <li><a href="drinks.html">Soft Drinks</a></li>
+                                    <li><a href="drinks.html">Juices</a></li>
+                                </ul>
+                            </div>                  
+                        </div>	
+                    </li>
+                    <li><a href="pet.html">Pet Food</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Frozen Foods<span class="caret"></span></a>
+                        <div class="dropdown-menu mega-dropdown-menu w3ls_vegetables_menu">
+                            <div class="w3ls_vegetables">
+                                <ul>
+                                    <li><a href="frozen.html">Frozen Snacks</a></li>
+                                    <li><a href="frozen.html">Frozen Nonveg</a></li>
+                                </ul>
+                            </div>                  
+                        </div>	
+                    </li>
+                    <li><a href="bread.html">Bread & Bakery</a></li>
+                </ul>
+             </div><!-- /.navbar-collapse -->
+        </nav>
+    </div>
+    <div class="w3l_banner_nav_right">
+<!-- mail -->
+    <div class="mail">
+       
+        <h1 style="margin-left: 50%;">Profile</h1>
+        <div class="agileinfo_mail_grids">
+            
 
-{% block extra_body %}
-{% endblock extra_body %}
+            <div class="row">
+                <div class="row mb-2">
+                    <section id="profile-links col-6">
+                        <a href="{% url 'account_profile' %}"
+                            class="btn btn-sm btn-outline-dark {% if 'profile' in request.path %} active {% endif %}">Update
+                            Personal
+                            Details</a>
+                        <a href="{% url 'account_email' %}"
+                            class="btn btn-sm btn-outline-dark {% if 'email' in request.path %} active {% endif %}">Change Email</a>
+                        <a href="{% url 'account_set_password' %}"
+                            class="btn btn-sm btn-outline-dark {% if 'password' in request.path %} active {% endif %}">Change
+                            Password</a>
 
-{% endblock content %}
+                            {% load crispy_forms_tags %}
+
+                            {% block title %} | Register{% endblock title %}
+                            {% block content %}
+                            <h1>Register</h1>
+                            {% crispy form %}
+                            {% endblock content %}
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- //mail -->
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+<div class="products-breadcrumb">
+    <div class="container">
+        
+    </div>
+</div>
+
+<!-- //newsletter -->
+<!-- footer -->
+<div class="footer">
+<div class="container">
+    <div class="col-md-3 w3_footer_grid">
+        <h3>information</h3>
+        <ul class="w3_footer_grid_list">
+            <li><a href="#">Events</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Best Deals</a></li>
+        </ul>
+    </div>
+    <div class="col-md-3 w3_footer_grid">
+        <h3>policy info</h3>
+        <ul class="w3_footer_grid_list">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">privacy policy</a></li>
+            <li><a href="#">terms of use</a></li>
+        </ul>
+    </div>
+    <div class="col-md-3 w3_footer_grid">
+        <h3>what in stores</h3>
+        <ul class="w3_footer_grid_list">
+            <li><a href="#">Pet Food</a></li>
+            <li><a href="#">Frozen Snacks</a></li>
+            <li><a href="#">Kitchen</a></li>
+            
+        </ul>
+    </div>
+    <div class="col-md-3 w3_footer_grid">
+        <h3>what in stores</h3>
+        <ul class="w3_footer_grid_list">
+            <li><a href="#">Pet Food</a></li>
+            <li><a href="#">Frozen Snacks</a></li>
+            <li><a href="#">Kitchen</a></li>
+        </ul>
+    </div>
+    <div class="clearfix"> </div>
+    <div class="agile_footer_grids">
+        
+       
+        <div class="clearfix"> </div>
+    </div>
+    <div class="wthree_footer_copy">
+        <p>© 2016 Grocery Store. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+    </div>
+</div>
+</div>
+<!-- //footer -->
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script>
+$(document).ready(function(){
+$(".dropdown").hover(            
+    function() {
+        $('.dropdown-menu', this).stop( true, true ).slideDown("fast");
+        $(this).toggleClass('open');        
+    },
+    function() {
+        $('.dropdown-menu', this).stop( true, true ).slideUp("fast");
+        $(this).toggleClass('open');       
+    }
+);
+});
+</script>
+<!-- here stars scrolling icon -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        /*
+            var defaults = {
+            containerID: 'toTop', // fading element id
+            containerHoverID: 'toTopHover', // fading element hover id
+            scrollSpeed: 1200,
+            easingType: 'linear' 
+            };
+        */
+                            
+        $().UItoTop({ easingType: 'easeOutQuart' });
+                            
+        });
+</script>
+<!-- //here ends scrolling icon -->
+<script src="{% static 'js/minicart.js' %}"></script>
+<script>
+    paypal.minicart.render();
+
+    paypal.minicart.cart.on('checkout', function (evt) {
+        var items = this.items(),
+            len = items.length,
+            total = 0,
+            i;
+
+        // Count the number of each item in the cart
+        for (i = 0; i < len; i++) {
+            total += items[i].get('quantity');
+        }
+
+        if (total < 3) {
+            alert('The minimum order quantity is 3. Please add more to your shopping cart before checking out');
+            evt.preventDefault();
+        }
+    });
+
+
+</script>
+
+
+<script src="https://js.stripe.com/v3/"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+{% block footer %}{% endblock %}
+<script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/payment.js' %}"></script>
+</body>
+
+</html>
